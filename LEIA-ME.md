@@ -2,8 +2,8 @@
 
 App de figurinhas para o story. É um site que vira "aplicativo" quando a pessoa adiciona à tela de início.
 
-- **App das figurinhas:** `seu-site/`
-- **Área da Rovya:** `seu-site/admin.html`. Só o e-mail **rovyacreative@gmail.com** consegue adicionar e apagar figurinhas.
+- **App das figurinhas:** https://zgroote.github.io/rovya-stickers/
+- **Área da Rovya:** https://zgroote.github.io/rovya-stickers/admin.html. Só o e-mail **rovyacreative@gmail.com** consegue adicionar e apagar figurinhas.
 
 ## Primeiro acesso à Área da Rovya
 
@@ -28,13 +28,13 @@ App de figurinhas para o story. É um site que vira "aplicativo" quando a pessoa
 - Figurinhas, pacotes e logins: no Supabase (projeto **rovya-stickers**, plano grátis). No plano grátis, o projeto **pausa se ficar 7 dias sem nenhum acesso**. Se o app parar de carregar, entre em supabase.com e clique em "Restore".
 - As 10 figurinhas iniciais estão na pasta `stickers/rovya/` do site.
 
-## Depois de publicar (uma vez só)
+## Se o endereço do site mudar
 
-No Supabase: **Authentication → URL Configuration**:
-- **Site URL:** coloque o endereço do site (ex.: `https://stickers.rovya.com.br`).
-- **Redirect URLs:** adicione o endereço do `admin.html`.
+(Por exemplo, ao passar para um domínio da Rovya.) No Supabase, vá em **Authentication → URL Configuration** e troque:
+- **Site URL:** o endereço novo (hoje: `https://zgroote.github.io/rovya-stickers/`).
+- **Redirect URLs:** o endereço novo com `**` no final (hoje: `https://zgroote.github.io/rovya-stickers/**`).
 
-Sem isso, os links de "confirmar e-mail" e "esqueci a senha" levam para uma página que não existe. A confirmação vale mesmo assim, mas o "esqueci a senha" não funciona.
+Sem isso, os links de "confirmar e-mail" e "esqueci a senha" levam para o endereço antigo.
 
 ## Testar no computador
 
