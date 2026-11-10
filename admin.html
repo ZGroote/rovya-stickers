@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Área da Rovya</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#4A0F18">
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --vinho: #4A0F18; --creme: #F3ECE3; --cobre: #C27A45;
+    --bg: #F3ECE3; --card: #FFFFFF; --texto: #2A0A10; --suave: #8C6F70; --linha: #E3D6CB;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #1C080C; --card: #2A0F15; --texto: #F3ECE3; --suave: #B59A9C; --linha: #3E1A21; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--texto); font: 15px/1.45 Inter, system-ui, sans-serif; }
+  .serif { font-family: "Cormorant Garamond", Georgia, serif; }
+  .caps { text-transform: uppercase; letter-spacing: .28em; font-size: 10px; }
+  [hidden] { display: none !important; }
+
+  header { background: var(--vinho); color: var(--creme); padding: calc(24px + env(safe-area-inset-top)) 20px 28px; }
+  .topo, main { max-width: 720px; margin: 0 auto; }
+  .topo { position: relative; }
+  .logo { font-size: 22px; font-weight: 500; letter-spacing: .14em; margin: 0; line-height: 1; }
+  .fio { width: 44px; height: 1px; background: var(--cobre); margin: 22px 0 14px; border: 0; }
+  h1 { font-weight: 300; font-size: 40px; line-height: 1; text-transform: uppercase; letter-spacing: .02em; margin: 0; }
+  .topo nav { position: absolute; top: 0; right: 0; display: flex; gap: 8px; }
+  .topo nav a, .topo nav button {
+    color: var(--creme); background: none; border: 1px solid rgba(243,236,227,.4); border-radius: 999px;
+    padding: 8px 12px; text-decoration: none; cursor: pointer; font-family: Inter, sans-serif;
+  }
+
+  main { padding: 24px 16px 48px; }
+  h2 { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 500; font-size: 26px; margin: 32px 0 12px; }
+  label { display: block; margin-bottom: 14px; }
+  label > span { display: block; margin-bottom: 6px; color: var(--suave); }
+  input, select {
+    width: 100%; font: 16px Inter, sans-serif; color: var(--texto); background: var(--card);
+    border: 1px solid var(--linha); border-radius: 12px; padding: 12px 14px;
+  }
+  .btn {
+    width: 100%; border: 0; border-radius: 999px; padding: 14px; background: var(--vinho); color: var(--creme);
+    font: 500 11px Inter, sans-serif; text-transform: uppercase; letter-spacing: .24em; cursor: pointer;
+  }
+  .btn:disabled { opacity: .5; }
+  .btn.sec { background: none; color: var(--texto); border: 1px solid var(--linha); margin-top: 10px; }
+  .txt { background: none; border: 0; color: var(--suave); text-decoration: underline; cursor: pointer; padding: 12px 0; font: inherit; }
+  .caixa { background: var(--card); border: 1px solid var(--linha); border-radius: 18px; padding: 20px; }
+
+  .linkcli { display: flex; gap: 8px; align-items: center; margin: -4px 0 0; }
+  .linkcli code { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--suave); font-size: 13px; }
+  .linkcli button { flex: none; border: 1px solid var(--linha); background: var(--card); color: var(--texto); border-radius: 999px; padding: 8px 12px; cursor: pointer; }
+
+  .soltar {
+    position: relative; display: grid; place-items: center; min-height: 160px; border: 1.5px dashed var(--linha);
+    border-radius: 16px; background: var(--bg); text-align: center; color: var(--suave); padding: 16px;
+  }
+  .soltar input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .soltar img { max-width: 100%; max-height: 180px; }
+
+  .grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .fig { background: var(--card); border: 1px solid var(--linha); border-radius: 18px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .fig img { width: 100%; aspect-ratio: 1; object-fit: contain; }
+  .fig small { display: block; color: var(--suave); }
+  .fig button { border: 0; background: none; color: #B4443F; cursor: pointer; padding: 4px 0; text-align: left; }
+  .vazio { color: var(--suave); }
+
+  #aviso {
+    position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom)); transform: translate(-50%, 200px);
+    background: var(--vinho); color: var(--creme); padding: 12px 18px; border-radius: 14px; width: max-content;
+    max-width: calc(100% - 32px); font-weight: 500; transition: transform .25s; box-shadow: 0 8px 24px rgba(0,0,0,.25);
+  }
+  #aviso.on { transform: translate(-50%, 0); }
+</style>
+</head>
+<body>
+<header>
+  <div class="topo">
+    <p class="logo serif">ROVYA</p>
+    <nav>
+      <a class="caps" href="./">Ver app</a>
+      <button class="caps" id="sair" hidden>Sair</button>
+    </nav>
+    <hr class="fio">
+    <h1 class="serif">Área da Rovya</h1>
+  </div>
+</header>
+
+<main>
+  <form id="entrar" class="caixa" hidden>
+    <label><span>E-mail</span><input type="email" name="email" required autocomplete="email"></label>
+    <label><span>Senha</span><input type="password" name="senha" required minlength="6" autocomplete="current-password"></label>
+    <button class="btn">Entrar</button>
+    <button type="button" class="btn sec" id="criar">Primeiro acesso: criar senha</button>
+    <button type="button" class="txt" id="esqueci">Esqueci a senha</button>
+  </form>
+
+  <p id="semAcesso" class="caixa" hidden>Este e-mail não tem acesso à área da Rovya.</p>
+
+  <section id="painel" hidden>
+    <label><span>Pacote</span><select id="pacote"></select></label>
+    <div class="linkcli">
+      <code id="link"></code>
+      <button type="button" class="caps" id="copiarLink">Copiar link</button>
+    </div>
+
+    <h2>Nova figurinha</h2>
+    <form id="nova" class="caixa">
+      <label class="soltar">
+        <input type="file" name="arquivo" accept="image/png" required>
+        <img id="previa" alt="" hidden>
+        <span id="escolha">Toque para escolher o PNG<br><small>fundo transparente, até 5 MB</small></span>
+      </label>
+      <label><span>Nome</span><input name="nome" required placeholder="Ex.: Bom dia"></label>
+      <label><span>Categoria</span><input name="categoria" list="cats" placeholder="Ex.: Rotina"></label>
+      <datalist id="cats"></datalist>
+      <button class="btn">Adicionar</button>
+    </form>
+
+    <h2>Figurinhas do pacote</h2>
+    <div class="grade" id="lista"></div>
+  </section>
+</main>
+
+<div id="aviso" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.js"></script>
+<script>
+  const sb = supabase.createClient('https://jgigosrsyxjqqhckudfe.supabase.co', 'sb_publishable_Y7tQfUBPShG6MIeAEChc5Q_3k2wOB0W');
+  const $ = id => document.getElementById(id);
+  const APP = new URL('./', location.href).href;
+  const PASTA = '/object/public/figurinhas/';
+  let timer;
+
+  // ---- login ----
+  sb.auth.onAuthStateChange((evento, sessao) => {
+    if (evento === 'PASSWORD_RECOVERY') setTimeout(novaSenha);
+    if (['INITIAL_SESSION', 'SIGNED_IN', 'SIGNED_OUT'].includes(evento)) setTimeout(() => abrir(sessao)); // setTimeout: não chamar o Supabase dentro do callback
+  });
+
+  async function abrir(sessao) {
+    $('entrar').hidden = !!sessao;
+    $('sair').hidden = !sessao;
+    $('semAcesso').hidden = $('painel').hidden = true;
+    if (!sessao) return;
+    const { data: admin } = await sb.rpc('is_admin');
+    if (!admin) return $('semAcesso').hidden = false;
+    $('painel').hidden = false;
+    carregarPacotes();
+  }
+
+  const traduzir = m => ({
+    'Invalid login credentials': 'E-mail ou senha errados.',
+    'Email not confirmed': 'Confirme seu e-mail primeiro (veja a caixa de entrada).',
+    'User already registered': 'Esse e-mail já tem acesso. Toque em Entrar.',
+  })[m] || m;
+
+  $('entrar').onsubmit = async e => {
+    e.preventDefault();
+    const f = e.target;
+    const { error } = await sb.auth.signInWithPassword({ email: f.email.value, password: f.senha.value });
+    if (error) avisar(traduzir(error.message));
+  };
+  $('criar').onclick = async () => {
+    const f = $('entrar');
+    if (!f.reportValidity()) return;
+    const { error } = await sb.auth.signUp({ email: f.email.value, password: f.senha.value, options: { emailRedirectTo: location.href } });
+    avisar(error ? traduzir(error.message) : 'Enviamos um e-mail de confirmação. Confirme e depois toque em Entrar.');
+  };
+  $('esqueci').onclick = async () => {
+    const email = $('entrar').email.value;
+    if (!email) return avisar('Digite seu e-mail primeiro.');
+    const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.href });
+    avisar(error ? traduzir(error.message) : 'Enviamos um link para criar uma nova senha.');
+  };
+  async function novaSenha() {
+    const senha = prompt('Digite a nova senha (mínimo 6 caracteres):');
+    if (!senha) return;
+    const { error } = await sb.auth.updateUser({ password: senha });
+    avisar(error ? traduzir(error.message) : 'Senha atualizada!');
+  }
+  $('sair').onclick = () => sb.auth.signOut();
+
+  // ---- pacotes ----
+  async function carregarPacotes(escolher) {
+    const { data, error } = await sb.from('pacotes').select('id, nome').order('criado_em');
+    if (error) return avisar('Erro: ' + error.message);
+    const atual = escolher || $('pacote').value || 'rovya';
+    $('pacote').replaceChildren(...data.map(p => new Option(p.nome, p.id)), new Option('+ Novo cliente…', '+'));
+    $('pacote').value = atual;
+    carregarFigurinhas();
+  }
+
+  const slug = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'cliente';
+
+  $('pacote').onchange = async () => {
+    if ($('pacote').value !== '+') return carregarFigurinhas();
+    const nome = prompt('Nome do cliente:')?.trim();
+    if (!nome) { $('pacote').value = 'rovya'; return carregarFigurinhas(); }
+    // final aleatório: o link do cliente não dá pra adivinhar só pelo nome
+    const id = slug(nome) + '-' + crypto.getRandomValues(new Uint32Array(1))[0].toString(36);
+    const { error } = await sb.from('pacotes').insert({ id, nome });
+    if (error) return avisar('Erro: ' + error.message);
+    avisar('Pacote de ' + nome + ' criado.');
+    carregarPacotes(id);
+  };
+
+  $('copiarLink').onclick = () => navigator.clipboard.writeText($('link').textContent).then(() => avisar('Link copiado!'));
+
+  // ---- figurinhas ----
+  async function carregarFigurinhas() {
+    const p = $('pacote').value;
+    $('link').textContent = p === 'rovya' ? APP : APP + '?p=' + p;
+    const { data, error } = await sb.from('figurinhas').select('*').eq('pacote', p).order('id');
+    if (error) return avisar('Erro: ' + error.message);
+    $('cats').replaceChildren(...[...new Set(data.map(f => f.categoria).filter(Boolean))].map(c => new Option(c)));
+    if (!data.length) return $('lista').innerHTML = '<p class="vazio">Nenhuma figurinha ainda.</p>';
+    $('lista').replaceChildren(...data.map(f => {
+      const card = document.createElement('div');
+      card.className = 'fig';
+      card.innerHTML = '<img><div><b></b><small></small></div><button type="button">Apagar</button>';
+      const img = card.querySelector('img');
+      img.src = f.arquivo;
+      img.alt = f.nome;
+      card.querySelector('b').textContent = f.nome;
+      card.querySelector('small').textContent = f.categoria || '';
+      card.querySelector('button').onclick = () => apagar(f);
+      return card;
+    }));
+  }
+
+  $('nova').arquivo.onchange = e => {
+    const arq = e.target.files[0];
+    $('previa').hidden = !arq;
+    $('escolha').hidden = !!arq;
+    if (!arq) return;
+    $('previa').src = URL.createObjectURL(arq);
+    const nome = $('nova').nome;
+    if (!nome.value) nome.value = arq.name.replace(/\.png$/i, '').replace(/[-_]+/g, ' ');
+  };
+
+  $('nova').onsubmit = async e => {
+    e.preventDefault();
+    const f = e.target, arq = f.arquivo.files[0], p = $('pacote').value;
+    if (arq.type !== 'image/png') return avisar('Use PNG com fundo transparente.');
+    if (arq.size > 5e6) return avisar('Arquivo muito grande (máximo 5 MB).');
+    const botao = f.querySelector('.btn');
+    botao.disabled = true;
+    botao.textContent = 'Enviando…';
+    const caminho = `${p}/${crypto.randomUUID()}.png`;
+    let { error } = await sb.storage.from('figurinhas').upload(caminho, arq, { contentType: 'image/png' });
+    if (!error) ({ error } = await sb.from('figurinhas').insert({
+      pacote: p,
+      nome: f.nome.value.trim(),
+      categoria: f.categoria.value.trim() || null,
+      arquivo: sb.storage.from('figurinhas').getPublicUrl(caminho).data.publicUrl,
+    }));
+    botao.disabled = false;
+    botao.textContent = 'Adicionar';
+    if (error) return avisar('Erro: ' + error.message);
+    f.reset();
+    $('previa').hidden = true;
+    $('escolha').hidden = false;
+    avisar('Figurinha adicionada!');
+    carregarFigurinhas();
+  };
+
+  async function apagar(f) {
+    if (!confirm(`Apagar a figurinha "${f.nome}"? Ela some do app para todo mundo.`)) return;
+    const { error } = await sb.from('figurinhas').delete().eq('id', f.id);
+    if (error) return avisar('Erro: ' + error.message);
+    const caminho = f.arquivo.split(PASTA)[1]; // as figurinhas iniciais ficam no site, não no Supabase
+    if (caminho) await sb.storage.from('figurinhas').remove([caminho]);
+    avisar('Figurinha apagada.');
+    carregarFigurinhas();
+  }
+
+  function avisar(msg) {
+    $('aviso').textContent = msg;
+    $('aviso').classList.add('on');
+    clearTimeout(timer);
+    timer = setTimeout(() => $('aviso').classList.remove('on'), 3200);
+  }
+</script>
+</body>
+</html>

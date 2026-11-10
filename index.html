@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rovya Stickers</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#4A0F18">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Rovya">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-512.png">
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Paleta tirada do Instagram @rovyacreative */
+  :root {
+    --vinho: #4A0F18;
+    --creme: #F3ECE3;
+    --cobre: #C27A45;
+    --bg: #F3ECE3;
+    --card: #FFFFFF;
+    --texto: #2A0A10;
+    --suave: #8C6F70;
+    --linha: #E3D6CB;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1C080C;
+      --card: #2A0F15;
+      --texto: #F3ECE3;
+      --suave: #B59A9C;
+      --linha: #3E1A21;
+    }
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { margin: 0; background: var(--bg); color: var(--texto); font: 15px/1.45 Inter, system-ui, sans-serif; }
+  .serif { font-family: "Cormorant Garamond", Georgia, serif; }
+  .caps { text-transform: uppercase; letter-spacing: .32em; font-size: 10px; }
+
+  header {
+    background: var(--vinho); color: var(--creme);
+    padding: calc(28px + env(safe-area-inset-top)) 20px 32px;
+  }
+  .topo, main, footer { max-width: 720px; margin: 0 auto; }
+  .topo { position: relative; }
+  .logo { font-size: 24px; font-weight: 500; letter-spacing: .14em; margin: 0; line-height: 1; }
+  .logo + .caps { margin: 4px 0 0; opacity: .75; }
+  .fio { width: 44px; height: 1px; background: var(--cobre); margin: 28px 0 18px; border: 0; }
+  h1 { font-weight: 300; font-size: 54px; line-height: .95; letter-spacing: .02em; text-transform: uppercase; margin: 0; }
+  h1 + .caps { margin: 10px 0 0; opacity: .75; }
+  .dica { font-style: italic; font-size: 21px; margin: 18px 0 0; color: #E9B48C; }
+  .ajuda {
+    position: absolute; top: 0; right: 0; background: none; color: var(--creme); cursor: pointer;
+    border: 1px solid rgba(243,236,227,.4); border-radius: 999px; padding: 8px 14px; font: 500 10px Inter, sans-serif;
+  }
+
+  main { padding: 20px 16px 0; }
+  nav { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 18px; scrollbar-width: none; }
+  nav button {
+    flex: none; border: 1px solid var(--linha); border-radius: 999px; padding: 9px 16px; background: none; color: var(--texto);
+    font: 500 10px Inter, sans-serif; text-transform: uppercase; letter-spacing: .24em; cursor: pointer;
+  }
+  nav button[aria-pressed="true"] { background: var(--vinho); border-color: var(--vinho); color: var(--creme); }
+  .grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .fig { position: relative; background: var(--card); border: 1px solid var(--linha); border-radius: 18px; }
+  .fig > button {
+    display: grid; place-items: center; width: 100%; aspect-ratio: 1; padding: 14px; border: 0; background: none;
+    cursor: pointer; border-radius: 18px; transition: transform .15s;
+  }
+  .fig > button:active { transform: scale(.95); }
+  .fig img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 2px 6px rgba(42,10,16,.12)); }
+  .fig a {
+    position: absolute; right: 8px; bottom: 8px; color: var(--suave); text-decoration: none;
+    padding: 5px 9px; border-radius: 999px; background: var(--bg);
+  }
+  .fig.ok { outline: 2px solid var(--cobre); }
+
+  footer { text-align: center; color: var(--suave); padding: 36px 16px calc(28px + env(safe-area-inset-bottom)); }
+  footer .serif { font-size: 18px; letter-spacing: .14em; color: var(--texto); margin-bottom: 4px; }
+
+  #aviso {
+    position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom)); transform: translate(-50%, 200px);
+    background: var(--vinho); color: var(--creme); padding: 12px 18px; border-radius: 14px; width: max-content;
+    max-width: calc(100% - 32px); font-weight: 500; transition: transform .25s; box-shadow: 0 8px 24px rgba(0,0,0,.25);
+  }
+  #aviso.on { transform: translate(-50%, 0); }
+
+  dialog {
+    border: 0; border-radius: 22px; padding: 26px 24px; max-width: 420px; width: calc(100% - 32px);
+    background: var(--card); color: var(--texto);
+  }
+  dialog::backdrop { background: rgba(28,8,12,.55); }
+  dialog h2 { font-weight: 300; font-size: 32px; text-transform: uppercase; letter-spacing: .04em; margin: 0; line-height: 1; }
+  dialog h3 { margin: 20px 0 6px; color: var(--cobre); font-weight: 500; }
+  dialog ol { margin: 0; padding-left: 20px; }
+  dialog li { margin-bottom: 4px; }
+  dialog form button {
+    margin-top: 22px; width: 100%; border: 0; border-radius: 999px; padding: 13px; background: var(--vinho);
+    color: var(--creme); font: 500 11px Inter, sans-serif; text-transform: uppercase; letter-spacing: .24em;
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="topo">
+    <p class="logo serif">ROVYA</p>
+    <p class="caps" id="pacote">Creative</p>
+    <button class="ajuda caps" onclick="ajuda.showModal()">Como usar</button>
+    <hr class="fio">
+    <h1 class="serif">Stickers</h1>
+    <p class="caps">Exclusivos da marca</p>
+    <p class="dica serif">Toque, copie e cole no seu story.</p>
+  </div>
+</header>
+
+<main>
+  <nav id="filtros" aria-label="Categorias"></nav>
+  <section class="grade" id="grade" aria-live="polite"></section>
+</main>
+
+<footer>
+  <div class="serif">ROVYA</div>
+  <div class="caps">Posicionamento de marca</div>
+</footer>
+
+<div id="aviso" role="status" aria-live="polite"></div>
+
+<dialog id="ajuda">
+  <h2 class="serif">Como usar</h2>
+  <h3 class="caps">No iPhone</h3>
+  <ol>
+    <li>Toque na figurinha (ela é copiada).</li>
+    <li>Abra o Instagram e crie um story.</li>
+    <li>Toque em <b>Adicionar figurinha</b> que aparece no canto, ou segure na tela e toque em <b>Colar</b>.</li>
+  </ol>
+  <h3 class="caps">No Android</h3>
+  <ol>
+    <li>Toque na figurinha (ela é copiada).</li>
+    <li>No story, abra o texto (Aa) e cole pela área de transferência do teclado.</li>
+    <li>Se não aparecer, toque em <b>Salvar</b> e adicione pela figurinha de foto do Instagram.</li>
+  </ol>
+  <h3 class="caps">Deixar como aplicativo</h3>
+  <ol>
+    <li><b>iPhone:</b> no Safari, toque em Compartilhar → <b>Adicionar à Tela de Início</b>.</li>
+    <li><b>Android:</b> no Chrome, toque nos ⋮ → <b>Adicionar à tela inicial</b>.</li>
+  </ol>
+  <form method="dialog"><button>Entendi</button></form>
+</dialog>
+
+<script>
+  // ?p=nome-do-pacote abre o pacote de um cliente; fica lembrado para quando abrir pelo ícone
+  let p = new URLSearchParams(location.search).get('p');
+  try { p = p || localStorage.getItem('pacote'); } catch {}
+  p = p || 'rovya';
+
+  let figurinhas = [], categoria = 'Todas', timer;
+
+  // Chave pública do Supabase: só consegue ler um pacote por vez, pela função pacote_publico
+  const SUPABASE = 'https://jgigosrsyxjqqhckudfe.supabase.co';
+  const CHAVE = 'sb_publishable_Y7tQfUBPShG6MIeAEChc5Q_3k2wOB0W';
+  const buscar = id => fetch(`${SUPABASE}/rest/v1/rpc/pacote_publico`, {
+    method: 'POST', headers: { apikey: CHAVE, 'Content-Type': 'application/json' }, body: JSON.stringify({ p: id })
+  }).then(r => r.ok ? r.json() : Promise.reject(r.status));
+
+  buscar(p).then(async pacote => {
+    if (pacote) try { localStorage.setItem('pacote', p); } catch {}
+    else pacote = await buscar(p = 'rovya');
+    if (p !== 'rovya') document.getElementById('pacote').textContent = 'para ' + pacote.nome;
+    figurinhas = pacote.figurinhas;
+    const cats = ['Todas', ...new Set(figurinhas.map(f => f.categoria).filter(Boolean))];
+    filtros.replaceChildren(...(cats.length > 2 ? cats : []).map(c => {
+      const b = document.createElement('button');
+      b.textContent = c;
+      b.setAttribute('aria-pressed', c === categoria);
+      return b;
+    }));
+    mostrar();
+  }).catch(() => avisar('Não consegui carregar as figurinhas. Tente de novo em instantes.'));
+
+  filtros.onclick = e => {
+    if (e.target.tagName !== 'BUTTON') return;
+    categoria = e.target.textContent;
+    filtros.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b === e.target));
+    mostrar();
+  };
+
+  function mostrar() {
+    grade.innerHTML = '';
+    figurinhas.filter(f => categoria === 'Todas' || f.categoria === categoria).forEach(f => {
+      const card = document.createElement('div');
+      card.className = 'fig';
+      card.innerHTML = '<button><img loading="lazy"></button><a class="caps">Salvar</a>';
+      const [btn, img, a] = card.querySelectorAll('button, img, a');
+      btn.setAttribute('aria-label', 'Copiar figurinha ' + f.nome);
+      img.src = f.arquivo;
+      img.alt = f.nome;
+      // arquivos do Supabase são de outro domínio: o ?download= faz o navegador baixar em vez de abrir
+      a.href = f.arquivo.startsWith('http') ? f.arquivo + '?download=' + encodeURIComponent(f.nome + '.png') : f.arquivo;
+      a.download = f.nome + '.png';
+      btn.onclick = () => copiar(f, card);
+      grade.append(card);
+    });
+  }
+
+  async function copiar(f, card) {
+    try {
+      // Promise dentro do ClipboardItem: o Safari exige isso para manter o "toque" do usuário
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': fetch(f.arquivo).then(r => r.blob()) })]);
+      card.classList.add('ok');
+      setTimeout(() => card.classList.remove('ok'), 1200);
+      avisar('Copiada! Agora abra o story e cole.');
+    } catch {
+      avisar('Não deu para copiar aqui. Toque em "Salvar".');
+    }
+  }
+
+  function avisar(msg) {
+    aviso.textContent = msg;
+    aviso.classList.add('on');
+    clearTimeout(timer);
+    timer = setTimeout(() => aviso.classList.remove('on'), 2600);
+  }
+</script>
+</body>
+</html>
