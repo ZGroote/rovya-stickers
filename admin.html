@@ -116,8 +116,7 @@
         <span id="escolha">Toque para escolher o PNG<br><small>fundo transparente, até 5 MB</small></span>
       </label>
       <label><span>Nome</span><input name="nome" required placeholder="Ex.: Bom dia"></label>
-      <label><span>Categoria</span><input name="categoria" list="cats" placeholder="Ex.: Rotina"></label>
-      <datalist id="cats"></datalist>
+      <label><span>Categoria</span><select name="categoria" id="categoria"></select></label>
       <button class="btn">Adicionar</button>
     </form>
 
@@ -211,13 +210,33 @@
 
   $('copiarLink').onclick = () => navigator.clipboard.writeText($('link').textContent).then(() => avisar('Link copiado!'));
 
+  // ---- categorias ----
+  // Lista fixa + as que já existem no pacote. No app, cada uma só aparece quando tiver pelo menos uma figurinha.
+  const CATEGORIAS = ['Rotina', 'Trabalho', 'Novidades', 'Negócios', 'Datas especiais', 'Black Friday', 'Marca'];
+  let extras = [];
+
+  function opcoesCategoria(escolher = '') {
+    const todas = [...new Set([...CATEGORIAS, ...extras])];
+    $('categoria').replaceChildren(new Option('Sem categoria', ''), ...todas.map(c => new Option(c)), new Option('+ Nova categoria…', '+'));
+    $('categoria').value = escolher;
+    if ($('categoria').selectedIndex < 0) $('categoria').value = '';
+  }
+
+  $('categoria').onchange = () => {
+    if ($('categoria').value !== '+') return;
+    const nova = prompt('Nome da nova categoria:')?.trim();
+    if (nova) extras.push(nova);
+    opcoesCategoria(nova);
+  };
+
   // ---- figurinhas ----
   async function carregarFigurinhas() {
     const p = $('pacote').value;
     $('link').textContent = p === 'rovya' ? APP : APP + '?p=' + p;
     const { data, error } = await sb.from('figurinhas').select('*').eq('pacote', p).order('id');
     if (error) return avisar('Erro: ' + error.message);
-    $('cats').replaceChildren(...[...new Set(data.map(f => f.categoria).filter(Boolean))].map(c => new Option(c)));
+    extras = data.map(f => f.categoria).filter(Boolean);
+    opcoesCategoria($('categoria').value);
     if (!data.length) return $('lista').innerHTML = '<p class="vazio">Nenhuma figurinha ainda.</p>';
     $('lista').replaceChildren(...data.map(f => {
       const card = document.createElement('div');
@@ -256,13 +275,15 @@
     if (!error) ({ error } = await sb.from('figurinhas').insert({
       pacote: p,
       nome: f.nome.value.trim(),
-      categoria: f.categoria.value.trim() || null,
+      categoria: f.categoria.value || null,
       arquivo: sb.storage.from('figurinhas').getPublicUrl(caminho).data.publicUrl,
     }));
     botao.disabled = false;
     botao.textContent = 'Adicionar';
     if (error) return avisar('Erro: ' + error.message);
+    const categoria = f.categoria.value;
     f.reset();
+    f.categoria.value = categoria; // mantém a categoria para subir várias seguidas
     $('previa').hidden = true;
     $('escolha').hidden = false;
     avisar('Figurinha adicionada!');
