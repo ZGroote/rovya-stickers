@@ -69,6 +69,18 @@
   .fig button { border: 0; background: none; color: #B4443F; cursor: pointer; padding: 4px 0; text-align: left; }
   .vazio { color: var(--suave); }
 
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 2px; border: 1px solid var(--linha); background: var(--card);
+    color: var(--texto); border-radius: 999px; padding: 4px 4px 4px 14px; font: 14px Inter, sans-serif;
+  }
+  .chip button {
+    border: 0; background: none; color: var(--suave); font-size: 20px; line-height: 1; width: 32px; height: 32px;
+    border-radius: 50%; cursor: pointer;
+  }
+  .chip button:hover { background: var(--bg); color: #B4443F; }
+  .chip.nova { padding: 10px 16px; cursor: pointer; border-style: dashed; color: var(--suave); }
+
   #aviso {
     position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom)); transform: translate(-50%, 200px);
     background: var(--vinho); color: var(--creme); padding: 12px 18px; border-radius: 14px; width: max-content;
@@ -122,6 +134,13 @@
 
     <h2>Figurinhas do pacote</h2>
     <div class="grade" id="lista"></div>
+
+    <h2>Categorias</h2>
+    <p class="vazio">Remover uma categoria não apaga figurinhas: elas só ficam sem categoria.</p>
+    <div class="chips">
+      <span id="categorias" style="display: contents"></span>
+      <button type="button" class="chip nova" id="novaCategoria">+ Nova categoria</button>
+    </div>
   </section>
 </main>
 
@@ -149,6 +168,7 @@
     const { data: admin } = await sb.rpc('is_admin');
     if (!admin) return $('semAcesso').hidden = false;
     $('painel').hidden = false;
+    carregarCategorias('');
     carregarPacotes();
   }
 
@@ -211,23 +231,60 @@
   $('copiarLink').onclick = () => navigator.clipboard.writeText($('link').textContent).then(() => avisar('Link copiado!'));
 
   // ---- categorias ----
-  // Lista fixa + as que já existem no pacote. No app, cada uma só aparece quando tiver pelo menos uma figurinha.
-  const CATEGORIAS = ['Rotina', 'Trabalho', 'Novidades', 'Negócios', 'Datas especiais', 'Black Friday', 'Marca'];
-  let extras = [];
+  // Ficam no banco (tabela categorias). No app, cada uma só aparece quando tiver pelo menos uma figurinha.
+  let categorias = [];
 
-  function opcoesCategoria(escolher = '') {
-    const todas = [...new Set([...CATEGORIAS, ...extras])];
-    $('categoria').replaceChildren(new Option('Sem categoria', ''), ...todas.map(c => new Option(c)), new Option('+ Nova categoria…', '+'));
+  async function carregarCategorias(escolher = $('categoria').value) {
+    const { data, error } = await sb.from('categorias').select('nome').order('id');
+    if (error) return avisar('Erro: ' + error.message);
+    categorias = data.map(c => c.nome);
+    $('categoria').replaceChildren(new Option('Sem categoria', ''), ...categorias.map(c => new Option(c)), new Option('+ Nova categoria…', '+'));
     $('categoria').value = escolher;
-    if ($('categoria').selectedIndex < 0) $('categoria').value = '';
+    if ($('categoria').selectedIndex < 0 || escolher === '+') $('categoria').value = '';
+    $('categorias').replaceChildren(...categorias.map(nome => {
+      const chip = document.createElement('span');
+      chip.className = 'chip';
+      const x = document.createElement('button');
+      x.type = 'button';
+      x.textContent = '×';
+      x.setAttribute('aria-label', 'Remover categoria ' + nome);
+      x.onclick = () => removerCategoria(nome);
+      chip.append(nome, x);
+      return chip;
+    }));
   }
 
+  async function novaCategoria(voltar) {
+    const nome = prompt('Nome da nova categoria:')?.trim().replace(/\s+/g, ' ');
+    if (!nome) return $('categoria').value = voltar;
+    // "black friday" quando já existe "Black Friday": usa a que já existe
+    const igual = categorias.find(c => c.toLowerCase() === nome.toLowerCase());
+    if (!igual) {
+      const { error } = await sb.from('categorias').insert({ nome });
+      if (error) { $('categoria').value = voltar; return avisar('Erro: ' + error.message); }
+      avisar('Categoria ' + nome + ' criada.');
+    }
+    carregarCategorias(igual || nome);
+  }
+
+  async function removerCategoria(nome) {
+    const { count } = await sb.from('figurinhas').select('id', { count: 'exact', head: true }).eq('categoria', nome);
+    const aviso = count ? `\n\n${count} figurinha(s) vão ficar sem categoria (elas não são apagadas).` : '';
+    if (!confirm(`Remover a categoria "${nome}"?${aviso}`)) return;
+    const { error } = await sb.from('categorias').delete().eq('nome', nome);
+    if (error) return avisar('Erro: ' + error.message);
+    avisar('Categoria removida.');
+    carregarCategorias();
+    carregarFigurinhas();
+  }
+
+  let categoriaAntes = '';
+  $('categoria').onfocus = () => categoriaAntes = $('categoria').value;
   $('categoria').onchange = () => {
-    if ($('categoria').value !== '+') return;
-    const nova = prompt('Nome da nova categoria:')?.trim();
-    if (nova) extras.push(nova);
-    opcoesCategoria(nova);
+    if ($('categoria').value === '+') novaCategoria(categoriaAntes);
+    else categoriaAntes = $('categoria').value;
   };
+  $('novaCategoria').onclick = () => novaCategoria($('categoria').value);
 
   // ---- figurinhas ----
   async function carregarFigurinhas() {
@@ -235,8 +292,6 @@
     $('link').textContent = p === 'rovya' ? APP : APP + '?p=' + p;
     const { data, error } = await sb.from('figurinhas').select('*').eq('pacote', p).order('id');
     if (error) return avisar('Erro: ' + error.message);
-    extras = data.map(f => f.categoria).filter(Boolean);
-    opcoesCategoria($('categoria').value);
     if (!data.length) return $('lista').innerHTML = '<p class="vazio">Nenhuma figurinha ainda.</p>';
     $('lista').replaceChildren(...data.map(f => {
       const card = document.createElement('div');
