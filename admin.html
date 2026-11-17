@@ -95,6 +95,8 @@
     <p class="logo serif">ROVYA</p>
     <nav>
       <a class="caps" href="./">Ver app</a>
+      <!-- CRM da Rovya: mesmo endereço e mesmo login, então abre já logado -->
+      <a class="caps" id="irCrm" href="https://zgroote.github.io/rovya-crm/app.html" hidden>CRM</a>
       <button class="caps" id="sair" hidden>Sair</button>
     </nav>
     <hr class="fio">
@@ -162,7 +164,7 @@
 
   async function abrir(sessao) {
     $('entrar').hidden = !!sessao;
-    $('sair').hidden = !sessao;
+    $('sair').hidden = $('irCrm').hidden = !sessao;
     $('semAcesso').hidden = $('painel').hidden = true;
     if (!sessao) return;
     const { data: admin } = await sb.rpc('is_admin');
