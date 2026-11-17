@@ -46,8 +46,9 @@
   h1 { font-weight: 300; font-size: 54px; line-height: .95; letter-spacing: .02em; text-transform: uppercase; margin: 0; }
   h1 + .caps { margin: 10px 0 0; opacity: .75; }
   .dica { font-style: italic; font-size: 21px; margin: 18px 0 0; color: #E9B48C; }
+  .cantos { position: absolute; top: 0; right: 0; display: flex; gap: 8px; }
   .ajuda {
-    position: absolute; top: 0; right: 0; background: none; color: var(--creme); cursor: pointer;
+    background: none; color: var(--creme); cursor: pointer; text-decoration: none;
     border: 1px solid rgba(243,236,227,.4); border-radius: 999px; padding: 8px 14px; font: 500 10px Inter, sans-serif;
   }
 
@@ -102,7 +103,11 @@
   <div class="topo">
     <p class="logo serif">ROVYA</p>
     <p class="caps" id="pacote">Creative</p>
-    <button class="ajuda caps" onclick="ajuda.showModal()">Como usar</button>
+    <div class="cantos">
+      <!-- só aparece para quem tem login neste navegador (Sabrina/equipe): volta para o CRM, já logado -->
+      <a class="ajuda caps" id="irCrm" href="https://zgroote.github.io/rovya-crm/app.html" hidden>CRM</a>
+      <button class="ajuda caps" onclick="ajuda.showModal()">Como usar</button>
+    </div>
     <hr class="fio">
     <h1 class="serif">Stickers</h1>
     <p class="caps">Exclusivos da marca</p>
@@ -151,6 +156,7 @@
   p = p || 'rovya';
 
   let figurinhas = [], categoria = 'Todas', timer;
+  try { if (Object.keys(localStorage).some(k => /^sb-.+-auth-token$/.test(k))) document.getElementById('irCrm').hidden = false; } catch {}
 
   // Chave pública do Supabase: só consegue ler um pacote por vez, pela função pacote_publico
   const SUPABASE = 'https://jgigosrsyxjqqhckudfe.supabase.co';

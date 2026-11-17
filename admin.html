@@ -66,6 +66,7 @@
   .fig { background: var(--card); border: 1px solid var(--linha); border-radius: 18px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
   .fig img { width: 100%; aspect-ratio: 1; object-fit: contain; }
   .fig small { display: block; color: var(--suave); }
+  .fig select { margin-top: 6px; padding: 6px 10px; font-size: 12px; }
   .fig button { border: 0; background: none; color: #B4443F; cursor: pointer; padding: 4px 0; text-align: left; }
   .vazio { color: var(--suave); }
 
@@ -254,6 +255,14 @@
       chip.append(nome, x);
       return chip;
     }));
+    document.querySelectorAll('.fig select').forEach(opcoesCategoria);
+  }
+
+  // categoria de cada figurinha: troca direto no cartão (antes só dava para escolher no envio)
+  function opcoesCategoria(sel) {
+    const atual = sel.dataset.atual;
+    sel.replaceChildren(new Option('Sem categoria', ''), ...[...new Set([...categorias, ...(atual ? [atual] : [])])].map(c => new Option(c)));
+    sel.value = atual;
   }
 
   async function novaCategoria(voltar) {
@@ -298,12 +307,21 @@
     $('lista').replaceChildren(...data.map(f => {
       const card = document.createElement('div');
       card.className = 'fig';
-      card.innerHTML = '<img><div><b></b><small></small></div><button type="button">Apagar</button>';
+      card.innerHTML = '<img><div><b></b><select></select></div><button type="button">Apagar</button>';
       const img = card.querySelector('img');
       img.src = f.arquivo;
       img.alt = f.nome;
       card.querySelector('b').textContent = f.nome;
-      card.querySelector('small').textContent = f.categoria || '';
+      const sel = card.querySelector('select');
+      sel.setAttribute('aria-label', 'Categoria de ' + f.nome);
+      sel.dataset.atual = f.categoria || '';
+      opcoesCategoria(sel);
+      sel.onchange = async () => {
+        const { error } = await sb.from('figurinhas').update({ categoria: sel.value || null }).eq('id', f.id);
+        if (error) { sel.value = sel.dataset.atual; return avisar('Erro: ' + error.message); }
+        sel.dataset.atual = sel.value;
+        avisar(sel.value ? `“${f.nome}” agora está em ${sel.value}.` : `“${f.nome}” ficou sem categoria.`);
+      };
       card.querySelector('button').onclick = () => apagar(f);
       return card;
     }));
