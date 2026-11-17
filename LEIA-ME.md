@@ -2,8 +2,8 @@
 
 App de figurinhas para o story. É um site que vira "aplicativo" quando a pessoa adiciona à tela de início.
 
-- **App das figurinhas:** https://zgroote.github.io/rovya-stickers/
-- **Área da Rovya:** https://zgroote.github.io/rovya-stickers/admin.html. Só o e-mail **rovyacreative@gmail.com** consegue adicionar e apagar figurinhas.
+- **App das figurinhas:** https://stickers.rovyacreative.com.br/
+- **Área da Rovya:** https://stickers.rovyacreative.com.br/admin.html. Só o e-mail **rovyacreative@gmail.com** consegue adicionar e apagar figurinhas.
 
 ## Primeiro acesso à Área da Rovya
 
@@ -31,8 +31,8 @@ App de figurinhas para o story. É um site que vira "aplicativo" quando a pessoa
 ## Se o endereço do site mudar
 
 (Por exemplo, ao passar para um domínio da Rovya.) No Supabase, vá em **Authentication → URL Configuration** e troque:
-- **Site URL:** o endereço novo (hoje: `https://zgroote.github.io/rovya-stickers/`).
-- **Redirect URLs:** o endereço novo com `**` no final (hoje: `https://zgroote.github.io/rovya-stickers/**`).
+- **Site URL:** o endereço novo (hoje: `https://stickers.rovyacreative.com.br/`).
+- **Redirect URLs:** o endereço novo com `**` no final (hoje: `https://stickers.rovyacreative.com.br/**`).
 
 Sem isso, os links de "confirmar e-mail" e "esqueci a senha" levam para o endereço antigo.
 
