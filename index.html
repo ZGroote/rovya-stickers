@@ -149,6 +149,7 @@
   <form method="dialog"><button>Entendi</button></form>
 </dialog>
 
+<script src="sessao-crm.js"></script>
 <script>
   // ?p=nome-do-pacote abre o pacote de um cliente; fica lembrado para quando abrir pelo ícone
   let p = new URLSearchParams(location.search).get('p');
@@ -156,7 +157,7 @@
   p = p || 'rovya';
 
   let figurinhas = [], categoria = 'Todas', timer;
-  try { if (Object.keys(localStorage).some(k => /^sb-.+-auth-token$/.test(k))) document.getElementById('irCrm').hidden = false; } catch {}
+  sessaoCrm.getItem('sb-jgigosrsyxjqqhckudfe-auth-token').then(v => { if (v) document.getElementById('irCrm').hidden = false; }); // só quem tem login no CRM
 
   // Chave pública do Supabase: só consegue ler um pacote por vez, pela função pacote_publico
   const SUPABASE = 'https://jgigosrsyxjqqhckudfe.supabase.co';

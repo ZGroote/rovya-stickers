@@ -96,7 +96,7 @@
     <p class="logo serif">ROVYA</p>
     <nav>
       <a class="caps" href="./">Ver app</a>
-      <!-- CRM da Rovya: outro endereço, mesmo e-mail e senha -->
+      <!-- CRM da Rovya: login compartilhado (sessao-crm.js), abre já logado -->
       <a class="caps" id="irCrm" href="https://crm.rovyacreative.com.br/app.html" hidden>CRM</a>
       <button class="caps" id="sair" hidden>Sair</button>
     </nav>
@@ -150,8 +150,9 @@
 <div id="aviso" role="status" aria-live="polite"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.js"></script>
+<script src="sessao-crm.js"></script>
 <script>
-  const sb = supabase.createClient('https://jgigosrsyxjqqhckudfe.supabase.co', 'sb_publishable_Y7tQfUBPShG6MIeAEChc5Q_3k2wOB0W');
+  const sb = supabase.createClient('https://jgigosrsyxjqqhckudfe.supabase.co', 'sb_publishable_Y7tQfUBPShG6MIeAEChc5Q_3k2wOB0W', { auth: { storage: sessaoCrm } });
   const $ = id => document.getElementById(id);
   const APP = new URL('./', location.href).href;
   const PASTA = '/object/public/figurinhas/';

@@ -4,6 +4,7 @@ App de figurinhas para o story. É um site que vira "aplicativo" quando a pessoa
 
 - **App das figurinhas:** https://stickers.rovyacreative.com.br/
 - **Área da Rovya:** https://stickers.rovyacreative.com.br/admin.html. Só o e-mail **rovyacreative@gmail.com** consegue adicionar e apagar figurinhas.
+- **Login compartilhado com o CRM:** o login fica guardado no CRM (`crm.rovyacreative.com.br/sessao.html`, que só responde a este endereço) e o `sessao-crm.js` lê/grava lá. Entrar em um entra no outro; sair sai dos dois. Se o CRM não responder, o login fica guardado aqui mesmo.
 
 ## Primeiro acesso à Área da Rovya
 
